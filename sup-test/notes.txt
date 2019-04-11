@@ -1,0 +1,11 @@
+npm init
+
+Needs
+Express JS: npm install express
+
+Dev dependency
+SuperTest: npm install supertest --save-dev
+Mocha: 
+
+This also installs the file /node_modules/mocha/bin/mocha.
+The line !/usr/bin/env node means linux will use nodejs to execute this file.
