@@ -9,3 +9,5 @@ Mocha:
 
 This also installs the file /node_modules/mocha/bin/mocha.
 The line !/usr/bin/env node means linux will use nodejs to execute this file.
+
+chai and chai-http

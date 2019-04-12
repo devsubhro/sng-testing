@@ -1,12 +1,19 @@
 /****
- * we are testing with supertest
+ * we are testing with supertest agent. This for api where we cannot import the server code as module.
+ * This means, we open socket connection to the remote server. If the remote server is not running,
+ * we will get Error: ECONNREFUSED: Connection refused
  */
-const request = require('supertest');
+const supertest = require('supertest');
 /***
  * no need to import the server code. We will open a connection
  * see https://codeforgeek.com/2015/07/unit-testing-nodejs-application-using-mocha/
  */
-const app = request.agent('http://localhost:3333');
+const app = supertest.agent('http://localhost:3333');
+/***
+ * test if the remote can be reached or not
+ * see https://stackoverflow.com/questions/26007187/node-js-check-if-a-remote-url-exists
+ */
+
 
 /***
  * testing get all user endpoint
@@ -17,7 +24,7 @@ const app = request.agent('http://localhost:3333');
  */
 describe('GET /users', function () {
     it('respond with json containing a list of all users', function (done) {
-        request(app)
+        app
             .get('/users')
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
@@ -29,7 +36,7 @@ describe('GET /users', function () {
  */
 describe('GET /user/:id', function () {
     it('respond with json containing a single user', function (done) {
-        request(app)
+        app
             .get('/user/U001')
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
@@ -42,7 +49,7 @@ describe('GET /user/:id', function () {
  */
 describe('GET /user/:id', function () {
     it('respond with json user not found', function (done) {
-        request(app)
+        app
             .get('/user/idisnonexisting')
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
@@ -66,7 +73,7 @@ describe('POST /user/new', function () {
         "address": "dummy"
     }
     it('respond with 201 created', function (done) {
-        request(app)
+        app
             .post('/user/new')
             .send(data)
             .set('Accept', 'application/json')
@@ -90,7 +97,7 @@ describe('POST /user/new', function () {
         "address": "dummy"
     }
     it('respond with 400 not created', function (done) {
-        request(app)
+        app
             .post('/user/new')
             .send(data)
             .set('Accept', 'application/json')
